@@ -1,21 +1,32 @@
 import React, { useState } from "react";
 import { RegisterScreen } from "../unauthenticated-app/register";
 import { LoginScreen } from "../unauthenticated-app/login";
-import { Card, Divider,Button } from "antd";
+import { Button, Card, Divider, Typography } from "antd";
 import styled from "@emotion/styled";
 import logo from "../assets/logo.svg";
 import left from "../assets/left.svg";
 import right from "../assets/right.svg";
+import { useDocumentTitle } from "../utils";
 
 export const UnauthenticatedApp = () => {
   const [isRegister, setIsRegister] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  useDocumentTitle("请登录注册以继续"); //设置页面标题
   return (
     <Container>
       <Header></Header>
       <Background></Background>
       <ShadowCard>
         <Title>{isRegister ? "请注册" : "请登录"}</Title>
-        {isRegister ? <RegisterScreen /> : <LoginScreen />}
+        {error ? (
+          <Typography.Text type={"danger"}>{error.message}</Typography.Text>
+        ) : null}
+        {isRegister ? (
+          <RegisterScreen onError={setError} />
+        ) : (
+          <LoginScreen onError={setError} />
+        )}
         <Divider />
         <Button onClick={() => setIsRegister(!isRegister)}>
           {isRegister ? "已经有帐号了，去登录" : "没有账号，注册新账号"}
