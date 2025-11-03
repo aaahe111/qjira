@@ -1,68 +1,84 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { ProjectListScreen } from "./screens/project-list";
 import { useAuth } from "./context/auth-context";
 import styled from "@emotion/styled";
-import { Row } from "./components/lib";
+import { ButtonNoPadding, Row } from "./components/lib";
 import {ReactComponent as SoftwareLogo} from "../src/assets/software-logo.svg";
 import { Button, Dropdown, Menu } from "antd";
 import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
+import { ProjectModal } from "./screens/project-list/project-modal";
+import { ProjectPopover } from "./components/project-popover";
 
 import { ProjectScreen } from "./screens/project";
 import { resetRoute } from "./utils";
 
 export const AuthenticatedApp = () => {
-  const { logout , user} = useAuth();
+  
+  
   return (
     <Container>
-      <PageHeader/>
-      <Main>
+      
       <BrowserRouter>
+        <PageHeader />
+        <Main>
           <Routes>
-            <Route path="/" element={<ProjectListScreen />} />
-            <Route path="/projects" element={<ProjectListScreen />} />
+            
+            <Route path={"/projects"} element={<ProjectListScreen />} />
             <Route
-              path="/projects/:projectId/*"
+              path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
             />
+            <Route path="*" element={<Navigate to={"/projects"} />} />
           </Routes>
-        </BrowserRouter>
-      </Main>
+        </Main>
+      
+        <ProjectModal />
+      </BrowserRouter>
     </Container>
   );
 };
 
 const PageHeader = () => {
-  const { logout, user } = useAuth();
 
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
-        <Button type={"link"} onClick={resetRoute}>
+        <ButtonNoPadding type={"link"} onClick={resetRoute}>
           <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
-        </Button>
-        <h2>项目</h2>
-        <h2>用户</h2>
+        </ButtonNoPadding>
+        <ProjectPopover />
+        <span>用户</span>
+        
       </HeaderLeft>
       <HeaderRight>
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item key={"logout"}>
-                <Button onClick={logout} type={"link"}>
-                  登出
-                </Button>
-              </Menu.Item>
-            </Menu>
-          }
-        >
-          <Button type={"link"} onClick={(e) => e.preventDefault()}>
-            Hi, {user?.name}
-          </Button>
-        </Dropdown>
+        <User />
       </HeaderRight>
     </Header>
   );
 };
+
+const User = () => {
+  const { logout, user } = useAuth();
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item key={"logout"}>
+            <Button onClick={logout} type={"link"}>
+              登出
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <Button type={"link"} onClick={(e) => e.preventDefault()}>
+        Hi, {user?.name}
+      </Button>
+    </Dropdown>
+  );
+};
+
+// temporal dead zone(暂时性死区)
 
 const Container = styled.div`
   display: grid;

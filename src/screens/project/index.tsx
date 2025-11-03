@@ -14,6 +14,7 @@ export const ProjectScreen = () => {
       </div>
       <Routes>
         {/*projects/:projectId/kanban*/}
+        <Route index element={<KanbanScreen />} />
         <Route path={"kanban"} element={<KanbanScreen />} />
         {/*projects/:projectId/epic*/}
         <Route path={"epic"} element={<EpicScreen />} />
