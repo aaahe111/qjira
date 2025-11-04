@@ -11,7 +11,7 @@ import { ProjectPopover } from "./components/project-popover";
 
 import { ProjectScreen } from "./screens/project";
 import { resetRoute } from "./utils";
-
+import { UserPopover } from "./components/user-popover";
 export const AuthenticatedApp = () => {
   
   
@@ -47,7 +47,7 @@ const PageHeader = () => {
           <SoftwareLogo width={"18rem"} color={"rgb(38, 132, 255)"} />
         </ButtonNoPadding>
         <ProjectPopover />
-        <span>用户</span>
+        <UserPopover />
         
       </HeaderLeft>
       <HeaderRight>
