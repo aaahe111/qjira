@@ -5,7 +5,6 @@ import {
   Droppable,
   DroppableProps,
   DroppableProvided,
-  DroppableProvidedProps,
 } from "react-beautiful-dnd";
 
 type DropProps = Omit<DroppableProps, "children"> & { children: ReactNode };
@@ -14,30 +13,25 @@ export const Drop = ({ children, ...props }: DropProps) => {
   return (
     <Droppable {...props}>
       {(provided) => {
-        if (React.isValidElement(children)) {
-          // 先创建不包含ref的props对象
-          const propsToPass = {
-            ...provided.droppableProps,
-            provided,
-          };
-          // 使用正确的方式传递ref
-          return React.cloneElement(children, propsToPass, provided.innerRef);
-        }
-        return <div />;
+        // 创建一个包装div来应用droppable的props和innerRef
+        return (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
+            {children}
+          </div>
+        );
       }}
     </Droppable>
   );
 };
 
-type DropChildProps = Partial<
-  { provided: DroppableProvided } & DroppableProvidedProps
-> &
-  React.HTMLAttributes<HTMLDivElement>;
+type DropChildProps = React.HTMLAttributes<HTMLDivElement>;
 export const DropChild = React.forwardRef<HTMLDivElement, DropChildProps>(
   ({ children, ...props }, ref) => (
     <div ref={ref} {...props}>
       {children}
-      {props.provided?.placeholder}
     </div>
   )
 );
@@ -47,16 +41,16 @@ export const Drag = ({ children, ...props }: DragProps) => {
   return (
     <Draggable {...props}>
       {(provided) => {
-        if (React.isValidElement(children)) {
-          // 先创建不包含ref的props对象
-          const propsToPass = {
-            ...provided.draggableProps,
-            ...provided.dragHandleProps,
-          };
-          // 使用正确的方式传递ref
-          return React.cloneElement(children, propsToPass, provided.innerRef);
-        }
-        return <div />;
+        // 创建一个包装div来应用draggable的props和innerRef
+        return (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            {children}
+          </div>
+        );
       }}
     </Draggable>
   );

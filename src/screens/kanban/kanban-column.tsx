@@ -1,6 +1,5 @@
 import React from "react";
 import { Kanban } from "../../types/kanban";
-// import { useTasksInProject } from "../../screens/kanban/util";
 import { useTaskTypes } from "../../utils/task-type";
 import taskIcon from "../../assets/task.svg";
 import bugIcon from "../../assets/bug.svg";
@@ -10,7 +9,8 @@ import { useTasks } from "../../utils/task";
 import {
   useKanbansQueryKey,
   useTasksModal,
-  useTasksSearchParams,
+  useProjectIdInUrl,
+  useTasksSearchParams
 } from "../../screens/kanban/util";
 import { CreateTask } from "../../screens/kanban/create-task";
 import { Task } from "../../types/task";
@@ -49,8 +49,27 @@ export const KanbanColumn = React.forwardRef<
   HTMLDivElement,
   { kanban: Kanban }
 >(({ kanban, ...props }, ref) => {
-  const { data: allTasks } = useTasks(useTasksSearchParams());
-  const tasks = allTasks?.filter((task) => task.kanbanId === kanban.id);
+  const projectId = useProjectIdInUrl();
+  // 直接使用项目ID获取所有任务，避免搜索参数可能导致的过滤问题
+  const { data: allTasks } = useTasks({ projectId });
+  
+  // 添加详细的调试信息
+  React.useEffect(() => {
+    console.log('Current project id:', projectId);
+    console.log('All tasks count:', allTasks?.length || 0);
+    console.log('Current kanban id:', kanban.id);
+    
+    // 记录所有任务的详细信息
+    allTasks?.forEach(task => {
+      console.log(`Task ${task.id}: name="${task.name}", kanbanId=${task.kanbanId}, projectId=${task.projectId}`);
+    });
+  }, [allTasks, kanban.id, projectId]);
+  
+  // 简化过滤逻辑，只根据kanbanId匹配
+  const tasks = allTasks?.filter(task => task.kanbanId === kanban.id);
+  
+  console.log(`Tasks for kanban ${kanban.id}: ${tasks?.length || 0}`);
+  
   return (
     <Container {...props} ref={ref}>
       <Row between={true}>
