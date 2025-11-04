@@ -5,17 +5,11 @@ import { useEffect, useState } from "react";
 import { Input, Select } from "antd";
 import { Form } from "antd";
 import { UserSelect } from "../../components/user-select";
-import { Project } from "./list";
+
+import { Project } from "../../types/project";
 
 
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
-}
+import { User } from "../../types/user";
 
 interface SearchPanelProps {
   users: User[];

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 import { Button,Spin, Typography } from "antd";
-import { loadDevTools } from "jira-dev-tool";
+import { DevTools } from "jira-dev-tool";
 
 export const Row = styled.div<{ gap?: number | boolean , between?: boolean , marginBottom?: number}>`
   display: flex;
@@ -30,7 +30,6 @@ export const FullPageLoading = () => (
 
 export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
   <FullPage>
-    {loadDevTools(() => {})}
     <ErrorBox error={error} />
   </FullPage>
 );
@@ -48,3 +47,10 @@ export const ErrorBox = ({ error }: { error: unknown }) => {
 export const ButtonNoPadding = styled(Button)`
   padding: 0;
 `
+
+export const ScreenContainer = styled.div`
+  padding: 3.2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;

@@ -13,7 +13,12 @@ import {
   useProjectModal,
   useProjectsSearchParams,
 } from "./utils";
-import { ButtonNoPadding, Row ,ErrorBox } from "../../components/lib";
+import {
+  ButtonNoPadding,
+  ErrorBox,
+  Row,
+  ScreenContainer,
+}  from "../../components/lib";
 // 使用 JS 的同学，大部分的错误都是在 runtime(运行时) 的时候发现的
 // 我们希望，在静态代码中，就能找到其中的一些错误 -> 强类型
 
@@ -29,7 +34,7 @@ export const ProjectListScreen = () => {
   const { open } = useProjectModal();
   
   return (
-    <Container>
+    <ScreenContainer>
       <Row between={true}>
         <h1>项目列表</h1>
       
@@ -49,7 +54,7 @@ export const ProjectListScreen = () => {
           </ButtonNoPadding>
         } 
       />
-    </Container>
+    </ScreenContainer>
   );
 };
 

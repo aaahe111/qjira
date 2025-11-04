@@ -1,5 +1,5 @@
 import React from "react";
-import { User } from "../../screens/project-list/search-panel";
+import { User } from "../../types/user";
 import { Table,Dropdown, Menu,Modal} from "antd";
 import dayjs from "dayjs";
 import { TableProps } from "antd/es/table";
@@ -13,14 +13,7 @@ import {
 } from "../../screens/project-list/utils";
 
 // TODO 把所有ID都改成number类型
-export interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  pin: boolean;
-  organization: string;
-  created: number;
-}
+import { Project } from "../../types/project";
 
 interface ListProps extends TableProps<Project> {
   users: User[];
